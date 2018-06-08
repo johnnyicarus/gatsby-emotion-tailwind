@@ -55,7 +55,7 @@ ${tw([
 `;
 
 const Graf = styled('p')`
-${tw('m-0')}
+${tw('m-0 text-md leading-normal')}
 `;
 
 export default () => (
