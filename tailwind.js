@@ -12,7 +12,11 @@ we've done our very best to explain each section.
 
 View the full documentation at https://tailwindcss.com.
 
+*/
+const merge = require('lodash.merge');
 
+
+/*
 |-------------------------------------------------------------------------------
 | The default config
 |-------------------------------------------------------------------------------
@@ -23,7 +27,8 @@ View the full documentation at https://tailwindcss.com.
 | values with some of the Tailwind defaults.
 |
 */
-var defaultConfig = require('tailwindcss/defaultConfig')();
+const defaultConfig = require('tailwindcss/defaultConfig')();
+
 
 function lineHeightCorrection(fontSize = 1, lineHeight = 1.5) {
   return ((fontSize * lineHeight) - fontSize) / 2;
@@ -32,6 +37,23 @@ function lineHeightCorrection(fontSize = 1, lineHeight = 1.5) {
 const leadingBase = 1.5;
 // const fontBase = 1;
 const rhythmUnit = leadingBase / 2;
+
+const verticalRhythms = {
+  '1': `${rhythmUnit}rem`,
+  '2': `${2 * rhythmUnit}rem`,
+  '3': `${3 * rhythmUnit}rem`,
+  '4': `${4 * rhythmUnit}rem`,
+  '6': `${6 * rhythmUnit}rem`,
+  '8': `${8 * rhythmUnit}rem`,
+};
+
+const gridContainers = {
+  md: '744px',
+  lg: '966px',
+  xl: '1164px'
+};
+
+
 
 
 /*
@@ -49,7 +71,7 @@ const rhythmUnit = leadingBase / 2;
 | "secondary", or even a numeric scale like "100" and "200", go for it.
 |
 */
-var colors = {
+const colors = {
   'my-custom-color': '#D4AF37',
 
   transparent: 'transparent',
@@ -151,8 +173,8 @@ module.exports = {
   | .error { color: config('colors.red') }
   |
   */
-
   colors: colors,
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -172,13 +194,13 @@ module.exports = {
   | Class name: .{screen}:{utility}
   |
   */
-
   screens: {
     sm: '576px',
     md: '768px',
     lg: '992px',
     xl: '1200px'
   },
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -197,7 +219,6 @@ module.exports = {
   | Class name: .font-{name}
   |
   */
-
   fonts: {
     sans: [
       '-apple-system',
@@ -234,6 +255,7 @@ module.exports = {
     ]
   },
 
+
   /*
   |-----------------------------------------------------------------------------
   | Text sizes                         https://tailwindcss.com/docs/text-sizing
@@ -252,7 +274,6 @@ module.exports = {
   | Class name: .text-{size}
   |
   */
-
   textSizes: {
     xs: '.75rem', // 12px
     sm: '.875rem', // 14px
@@ -268,6 +289,7 @@ module.exports = {
     baseLG: '1.3em'
   },
 
+
   /*
   |-----------------------------------------------------------------------------
   | Font weights                       https://tailwindcss.com/docs/font-weight
@@ -281,7 +303,6 @@ module.exports = {
   | Class name: .font-{weight}
   |
   */
-
   fontWeights: {
     hairline: 100,
     thin: 200,
@@ -294,6 +315,7 @@ module.exports = {
     black: 900
   },
 
+
   /*
   |-----------------------------------------------------------------------------
   | Leading (line height)              https://tailwindcss.com/docs/line-height
@@ -305,13 +327,13 @@ module.exports = {
   | Class name: .leading-{size}
   |
   */
-
   leading: {
     none: 1,
     tight: 1.25,
     normal: leadingBase,
     loose: 2
   },
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -324,12 +346,12 @@ module.exports = {
   | Class name: .tracking-{size}
   |
   */
-
   tracking: {
     tight: '-0.05em',
     normal: '0',
     wide: '0.05em'
   },
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -343,8 +365,8 @@ module.exports = {
   | Class name: .text-{color}
   |
   */
-
   textColors: colors,
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -358,8 +380,8 @@ module.exports = {
   | Class name: .bg-{color}
   |
   */
-
   backgroundColors: colors,
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -373,7 +395,6 @@ module.exports = {
   | Class name: .border{-side?}{-width?}
   |
   */
-
   borderWidths: {
     default: '1px',
     '0': '0',
@@ -381,6 +402,7 @@ module.exports = {
     '4': '4px',
     '8': '8px'
   },
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -398,8 +420,8 @@ module.exports = {
   | Class name: .border-{color}
   |
   */
-
   borderColors: Object.assign({ default: colors['grey-light'] }, colors),
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -416,7 +438,6 @@ module.exports = {
   | Class name: .rounded{-side?}{-size?}
   |
   */
-
   borderRadius: {
     none: '0',
     sm: '.125rem',
@@ -424,6 +445,7 @@ module.exports = {
     lg: '.5rem',
     full: '9999px'
   },
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -444,23 +466,9 @@ module.exports = {
   | Class name: .w-{size}
   |
   */
-
-  width: {
+  width: merge(gridContainers, verticalRhythms, {
     auto: 'auto',
     px: '1px',
-    '1': '0.25rem',
-    '2': '0.5rem',
-    '3': '0.75rem',
-    '4': '1rem',
-    '6': '1.5rem',
-    '8': '2rem',
-    '10': '2.5rem',
-    '12': '3rem',
-    '16': '4rem',
-    '24': '6rem',
-    '32': '8rem',
-    '48': '12rem',
-    '64': '16rem',
     '1/2': '50%',
     '1/3': '33.33333%',
     '2/3': '66.66667%',
@@ -474,7 +482,8 @@ module.exports = {
     '5/6': '83.33333%',
     full: '100%',
     screen: '100vw'
-  },
+  }),
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -490,26 +499,13 @@ module.exports = {
   | Class name: .h-{size}
   |
   */
-
-  height: {
+  height: merge(verticalRhythms, {
     auto: 'auto',
     px: '1px',
-    '1': `${rhythmUnit}rem`,
-    '2': `${2 * rhythmUnit}rem`,
-    '3': `${3 * rhythmUnit}rem`,
-    '4': `${4 * rhythmUnit}rem`,
-    '6': `${6 * rhythmUnit}rem`,
-    '8': `${8 * rhythmUnit}rem`,
-    '10': '2.5rem',
-    '12': '3rem',
-    '16': '4rem',
-    '24': '6rem',
-    '32': '8rem',
-    '48': '12rem',
-    '64': '16rem',
     full: '100%',
     screen: '100vh'
-  },
+  }),
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -524,11 +520,11 @@ module.exports = {
   | Class name: .min-w-{size}
   |
   */
-
   minWidth: {
     '0': '0',
     full: '100%'
   },
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -543,12 +539,12 @@ module.exports = {
   | Class name: .min-h-{size}
   |
   */
-
   minHeight: {
     '0': '0',
     full: '100%',
     screen: '100vh'
   },
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -564,19 +560,10 @@ module.exports = {
   | Class name: .max-w-{size}
   |
   */
-
-  maxWidth: {
-    xs: '20rem',
-    sm: '30rem',
-    md: '40rem',
-    lg: '50rem',
-    xl: '60rem',
-    '2xl': '70rem',
-    '3xl': '80rem',
-    '4xl': '90rem',
-    '5xl': '100rem',
+  maxWidth: merge(gridContainers, {
     full: '100%'
-  },
+  }),
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -591,11 +578,11 @@ module.exports = {
   | Class name: .max-h-{size}
   |
   */
-
   maxHeight: {
     full: '100%',
     screen: '100vh'
   },
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -611,22 +598,16 @@ module.exports = {
   | Class name: .p{side?}-{size}
   |
   */
-
-  padding: {
+  padding: merge(verticalRhythms, {
     px: '1px',
     '0': '0',
-    '1': `${rhythmUnit}rem`,
-    '2': `${2 * rhythmUnit}rem`,
-    '3': `${3 * rhythmUnit}rem`,
-    '4': `${4 * rhythmUnit}rem`,
-    '6': `${6 * rhythmUnit}rem`,
-    '8': `${8 * rhythmUnit}rem`,
     xs: '0.25rem',
     sm: '0.5rem',
     md: '1rem',
     lg: '2rem',
     xl: '4rem',
-  },
+  }),
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -642,23 +623,17 @@ module.exports = {
   | Class name: .m{side?}-{size}
   |
   */
-
-  margin: {
+  margin: merge(verticalRhythms, {
     auto: 'auto',
     px: '1px',
     '0': '0',
-    '1': `${rhythmUnit}rem`,
-    '2': `${2 * rhythmUnit}rem`,
-    '3': `${3 * rhythmUnit}rem`,
-    '4': `${4 * rhythmUnit}rem`,
-    '6': `${6 * rhythmUnit}rem`,
-    '8': `${8 * rhythmUnit}rem`,
     xs: '0.25rem',
     sm: '0.5rem',
     md: '1rem',
     lg: '2rem',
     xl: '4rem',
-  },
+  }),
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -674,7 +649,6 @@ module.exports = {
   | Class name: .-m{side?}-{size}
   |
   */
-
   negativeMargin: {
     px: '1px',
     '0': '0',
@@ -685,6 +659,7 @@ module.exports = {
     '6': '1.5rem',
     '8': '2rem'
   },
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -701,7 +676,6 @@ module.exports = {
   | Class name: .shadow-{size?}
   |
   */
-
   shadows: {
     default: '0 2px 4px 0 rgba(0,0,0,0.10)',
     md: '0 4px 8px 0 rgba(0,0,0,0.12), 0 2px 4px 0 rgba(0,0,0,0.08)',
@@ -709,6 +683,7 @@ module.exports = {
     inner: 'inset 0 2px 4px 0 rgba(0,0,0,0.06)',
     none: 'none'
   },
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -722,7 +697,6 @@ module.exports = {
   | Class name: .z-{index}
   |
   */
-
   zIndex: {
     auto: 'auto',
     '0': 0,
@@ -732,6 +706,7 @@ module.exports = {
     '40': 40,
     '50': 50
   },
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -745,7 +720,6 @@ module.exports = {
   | Class name: .opacity-{name}
   |
   */
-
   opacity: {
     '0': '0',
     '25': '.25',
@@ -753,6 +727,7 @@ module.exports = {
     '75': '.75',
     '100': '1'
   },
+
 
   /*
   |-----------------------------------------------------------------------------
@@ -763,7 +738,6 @@ module.exports = {
   | details about these options, visit the configuration options documentation.
   |
   */
-
   options: {
     prefix: '',
     important: false
